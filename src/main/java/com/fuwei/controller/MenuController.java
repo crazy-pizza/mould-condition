@@ -4,7 +4,7 @@ import com.fuwei.bean.Menu;
 import com.fuwei.bean.User;
 import com.fuwei.common.ResultCode;
 import com.fuwei.common.ResultUtils;
-import com.fuwei.config.UserResolver;
+import com.fuwei.component.UserResolver;
 import com.fuwei.exception.BusinessException;
 import com.fuwei.service.MenuService;
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author YuanChong

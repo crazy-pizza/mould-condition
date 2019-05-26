@@ -1,4 +1,4 @@
-package com.fuwei.config;
+package com.fuwei.component;
 
 public @interface UserResolver {
 }

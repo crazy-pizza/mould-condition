@@ -29,7 +29,7 @@ public class PassportInterceptor implements HandlerInterceptor {
         if(request.getCookies() != null) {
             Optional<Cookie> accessToken = Arrays.stream(request.getCookies()).filter(cookie -> Objects.equals(cookie.getName(), "accessToken")).findFirst();
             if(accessToken.isPresent()) {
-                User user = (User)request.getSession().getAttribute(accessToken.get().getName());
+                User user = (User)request.getSession().getAttribute(accessToken.get().getValue());
                 if(user != null) {
                     UserHolder.setUser(user);
                     return true;

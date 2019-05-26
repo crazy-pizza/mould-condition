@@ -4,7 +4,7 @@ import com.fuwei.bean.Condition;
 import com.fuwei.bean.User;
 import com.fuwei.common.ResultCode;
 import com.fuwei.common.ResultUtils;
-import com.fuwei.config.UserResolver;
+import com.fuwei.component.UserResolver;
 import com.fuwei.exception.BusinessException;
 import com.fuwei.service.ConditionService;
 import com.github.pagehelper.PageInfo;

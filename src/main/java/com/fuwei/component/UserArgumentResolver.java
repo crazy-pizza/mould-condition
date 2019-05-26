@@ -1,6 +1,5 @@
 package com.fuwei.component;
 
-import com.fuwei.config.UserResolver;
 import com.fuwei.interceptor.UserHolder;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -18,8 +17,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
-        UserResolver annotation = methodParameter.getParameterAnnotation(UserResolver.class);
-        return annotation != null;
+        return methodParameter.hasParameterAnnotation(UserResolver.class);
     }
 
     @Override
