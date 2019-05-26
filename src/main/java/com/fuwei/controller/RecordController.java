@@ -34,7 +34,7 @@ public class RecordController {
             throw new BusinessException(ResultCode.MENUID_LOST);
         }
         if(record.getData() == null) {
-            throw new BusinessException(ResultCode.MENUID_LOST);
+            throw new BusinessException(ResultCode.RECORD_DATA_LIMIT);
         }
         record.setUserID(user.getUserID());
         record.setIsAdmin(user.getIsAdmin());
