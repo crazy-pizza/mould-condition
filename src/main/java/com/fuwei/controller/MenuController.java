@@ -45,7 +45,7 @@ public class MenuController {
             throw new BusinessException(ResultCode.MENU_LEVEL_LOST);
         }
         menuService.addMenu(menu);
-        return ResultUtils.success(null);
+        return ResultUtils.success();
     }
 
 
@@ -70,7 +70,7 @@ public class MenuController {
             throw new BusinessException(ResultCode.MENUID_LOST);
         }
         menuService.updateMenu(menu);
-        return ResultUtils.success(null);
+        return ResultUtils.success();
     }
 
     /**
@@ -89,7 +89,7 @@ public class MenuController {
             throw new BusinessException(ResultCode.MENUID_LOST);
         }
         menuService.deleteMenu(menu);
-        return ResultUtils.success(null);
+        return ResultUtils.success();
     }
 
 

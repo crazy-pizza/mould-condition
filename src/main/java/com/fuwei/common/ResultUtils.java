@@ -20,6 +20,14 @@ public class ResultUtils {
         return result;
     }
 
+    public static JSONObject success() {
+        JSONObject result = new JSONObject();
+        result.put("code",ResultCode.SUCCESS.getCode());
+        result.put("msg",ResultCode.SUCCESS.getMsg());
+        result.put("data",null);
+        return result;
+    }
+
     public static JSONObject pageSuccess(PageInfo<?> pageInfo) {
         JSONObject result = new JSONObject();
         result.put("code",ResultCode.SUCCESS.getCode());

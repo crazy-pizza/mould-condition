@@ -20,7 +20,7 @@
             username: $("#username").val(),
             password: $("#password").val(),
         }
-        sendRequest("/user/login", data, loginSuccess)
+        sendRequest("/user/out/login", data, loginSuccess)
     }
 
     function loginSuccess(data) {

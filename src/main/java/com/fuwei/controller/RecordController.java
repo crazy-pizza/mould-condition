@@ -39,7 +39,7 @@ public class RecordController {
         record.setUserID(user.getUserID());
         record.setIsAdmin(user.getIsAdmin());
         recordService.addRecord(record);
-        return ResultUtils.success(null);
+        return ResultUtils.success();
     }
 
 

@@ -25,7 +25,8 @@ public enum ResultCode {
     PERMISSION_LIMIT("020","您不是该成型条件记录的创建人，不能操作记录"),
     PAGENO_LIMIT("021","pageNum必传"),
     PAGESIZE_LIMIT("022","pageSize必传"),
-    RECORD_DATA_LIMIT("023","记录的数据必传");
+    RECORD_DATA_LIMIT("023","记录的数据必传"),
+    USERID_LOST("024","用户ID必传");
 
 
     private String code;

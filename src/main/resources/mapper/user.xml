@@ -32,4 +32,21 @@
         )
     </insert>
 
+    <select id="resetPassword" parameterType="com.fuwei.bean.User">
+        UPDATE user SET password = #{password} WHERE userID = #{userID}
+    </select>
+
+    <select id="queryList" parameterType="com.fuwei.bean.User" resultType="com.fuwei.bean.User">
+        SELECT userID,realname,password,username,isAdmin
+        FROM user
+        <where>
+            <if test="userID != null and userID != ''">
+                AND userID = #{userID}
+            </if>
+            <if test="searchKey != null and searchKey != ''">
+                AND LOWER(CONCAT(realname,';',username)) like LOWER(CONCAT('%', #{searchKey}, '%'))
+            </if>
+        </where>
+    </select>
+
 </mapper>

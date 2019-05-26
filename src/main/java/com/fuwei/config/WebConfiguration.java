@@ -37,7 +37,7 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         InterceptorRegistration registration = registry.addInterceptor(passportInterceptor);
         registration.addPathPatterns("/**");
-        registration.excludePathPatterns("/user/**");
+        registration.excludePathPatterns("/user/out/**");
         registration.excludePathPatterns("/error");
         registration.excludePathPatterns("/static/**");
     }

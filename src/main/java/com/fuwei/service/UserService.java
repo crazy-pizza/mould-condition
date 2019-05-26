@@ -1,13 +1,18 @@
 package com.fuwei.service;
 
+import com.fuwei.bean.Condition;
 import com.fuwei.bean.User;
 import com.fuwei.common.ResultCode;
 import com.fuwei.exception.BusinessException;
 import com.fuwei.mapper.UserMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author YuanChong
@@ -44,5 +49,21 @@ public class UserService {
         String encryptPassword = DigestUtils.md5Hex(user.getPassword());
         user.setPassword(encryptPassword);
         userMapper.insert(user);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void resetPassword(User user) {
+        //加密 默认密码123456
+        String encryptPassword = DigestUtils.md5Hex("123456");
+        user.setPassword(encryptPassword);
+        userMapper.resetPassword(user);
+
+    }
+
+    public PageInfo<Condition> queryUser(User user) {
+        PageHelper.startPage(user.getPageNum(),user.getPageSize());
+        List<User> list = userMapper.queryList(user);
+        PageInfo<Condition> pageInfo = new PageInfo(list);
+        return pageInfo;
     }
 }

@@ -52,7 +52,7 @@ public class ConditionController {
         }
         condition.setUserID(user.getUserID());
         conditionService.addCondition(condition);
-        return ResultUtils.success(null);
+        return ResultUtils.success();
     }
 
 
@@ -71,7 +71,7 @@ public class ConditionController {
         condition.setUserID(user.getUserID());
         condition.setIsAdmin(user.getIsAdmin());
         conditionService.updateCondition(condition);
-        return ResultUtils.success(null);
+        return ResultUtils.success();
     }
 
     /**
@@ -89,7 +89,7 @@ public class ConditionController {
         condition.setUserID(user.getUserID());
         condition.setIsAdmin(user.getIsAdmin());
         conditionService.deleteCondition(condition);
-        return ResultUtils.success(null);
+        return ResultUtils.success();
     }
 
     /**
