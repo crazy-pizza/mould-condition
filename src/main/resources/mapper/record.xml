@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fuwei.mapper.RecordMapper">
+
+    <select id="query" parameterType="com.fuwei.bean.Record" resultType="com.fuwei.bean.Record">
+        SELECT recordID,conditionID,menuID,data
+        FROM record
+        <where>
+            <if test="menuID != null and menuID != ''">
+                AND menuID = #{menuID}
+            </if>
+            <if test="conditionIDs != null and conditionIDs != ''">
+                AND conditionID IN (${conditionIDs})
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.fuwei.bean.Record">
+        INSERT INTO record(
+        <if test="conditionID != null and conditionID != ''">conditionID,</if>
+        <if test="menuID != null and menuID != ''">menuID,</if>
+        <if test="data != null and data != ''">data,</if>
+        <if test="date != null and date != ''">action,</if>
+        actionTime,
+        createTime
+        )values(
+        <if test="conditionID != null and conditionID != ''">#{conditionID},</if>
+        <if test="menuID != null and menuID != ''">#{menuID},</if>
+        <if test="data != null and data != ''">#{data},</if>
+        <if test="date != null and date != ''">#{date},</if>
+        date_format( now() ,'%Y%m%d%H%i%s'),
+        date_format( now() ,'%Y%m%d%H%i%s'))
+    </insert>
+
+    <delete id="delete" parameterType="com.fuwei.bean.Record">
+        DELETE FROM record WHERE
+        <trim prefixOverrides="AND">
+            <if test="conditionID != null and conditionID != ''">
+                AND conditionID = #{conditionID}
+            </if>
+            <if test="menuID != null and menuID != ''">
+                AND menuID = #{menuID}
+            </if>
+        </trim>
+    </delete>
+
+</mapper>

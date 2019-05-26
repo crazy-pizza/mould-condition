@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fuwei.mapper.MenuMapper">
+
+    <select id="query" parameterType="com.fuwei.bean.Menu" resultType="com.fuwei.bean.Menu">
+        SELECT menuID,menuName,parentID,menuLevel,action
+        FROM menu
+        <where>
+            <if test="menuName != null and menuName != ''">
+                AND menuName = #{menuName}
+            </if>
+            <if test="parentID != null and parentID != ''">
+                AND parentID = #{parentID}
+            </if>
+            <if test="excludeID != null and excludeID != ''">
+                AND menuID != #{excludeID}
+            </if>
+            <if test="action != null and action != ''">
+                AND action = #{action}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.fuwei.bean.Menu">
+        INSERT INTO menu(
+        <if test="menuName != null and menuName != ''">menuName,</if>
+        <if test="parentID != null and parentID != ''">parentID,</if>
+        <if test="menuLevel != null and menuLevel != ''">menuLevel,</if>
+        <if test="action != null and action != ''">action,</if>
+        actionTime,
+        createTime
+        )values(
+        <if test="menuName != null and menuName != ''">#{menuName},</if>
+        <if test="parentID != null and parentID != ''">#{parentID},</if>
+        <if test="menuLevel != null and menuLevel != ''">#{menuLevel},</if>
+        <if test="action != null and action != ''">#{action},</if>
+        date_format( now() ,'%Y%m%d%H%i%s'),
+        date_format( now() ,'%Y%m%d%H%i%s'))
+    </insert>
+
+    <delete id="delete" parameterType="com.fuwei.bean.Menu">
+        DELETE FROM menu where menuID = #{menuID}
+    </delete>
+
+    <update id="update" parameterType="com.fuwei.bean.Menu">
+        UPDATE menu SET
+        <if test="menuName != null and menuName != '' ">
+            menuName=#{menuName},
+        </if>
+        <if test="parentID != null and parentID != '' ">
+            parentID=#{parentID},
+        </if>
+        <if test="menuLevel != null and menuLevel != '' ">
+            menuLevel=#{menuLevel},
+        </if>
+        <if test="action != null and action != '' ">
+            action=#{action},
+        </if>
+        actionTime=date_format( now() ,'%Y%m%d%H%i%s')
+        WHERE menuID = #{menuID}
+    </update>
+
+
+</mapper>

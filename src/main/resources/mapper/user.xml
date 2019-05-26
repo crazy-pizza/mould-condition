@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fuwei.mapper.UserMapper">
+
+    <select id="query" parameterType="com.fuwei.bean.User" resultType="com.fuwei.bean.User">
+        SELECT userID,realname,password,username,isAdmin
+        FROM user
+        WHERE
+        <trim prefixOverrides="AND">
+            <if test="username != null and username != ''">
+                AND username = #{username}
+            </if>
+            <if test="password != null and password != ''">
+                AND password = #{password}
+            </if>
+        </trim>
+    </select>
+
+    <insert id="insert" parameterType="com.fuwei.bean.User">
+        INSERT INTO user(
+        <trim suffixOverrides=",">
+            <if test="realname != null and realname != ''">realname,</if>
+            <if test="password != null and password != ''">password,</if>
+            <if test="username != null and username != ''">username,</if>
+        </trim>
+        )values(
+        <trim suffixOverrides=",">
+            <if test="realname != null and realname != ''">#{realname},</if>
+            <if test="password != null and password != ''">#{password},</if>
+            <if test="username != null and username != ''">#{username},</if>
+        </trim>
+        )
+    </insert>
+
+</mapper>

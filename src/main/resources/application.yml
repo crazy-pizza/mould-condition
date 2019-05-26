@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: test
+  http:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
+
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: UTF-8
+
+mybatis:
+  config-location: classpath:mybatis-config.xml
+
