@@ -120,12 +120,12 @@ public class UserController {
     }
 
     /**
-     * 判断当前登陆的用户是否是admin
+     * 查询当前登陆的用户信息
      * @return
      */
-    @RequestMapping("/isAdmin")
+    @RequestMapping("/loginUser")
     public Object isAdmin(@UserResolver User user) {
-        return user.getIsAdmin() == 2;
+        return ResultUtils.success(user);
     }
 
 
