@@ -1,10 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <link href="css/style.css" rel='stylesheet' type='text/css'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="js/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="js/webAjax.js"></script>
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    }
+
+    function register() {
+        if ($("#password").val() != $("#confirmPassword").val()) {
+            alert("两次输入的密码不一致")
+            return
+        }
+        var data = {
+            username: $("#username").val(),
+            password: $("#password").val(),
+            realname: $("#realname").val()
+        }
+        sendRequest("/user/register", data, registerSuccess)
+
+    }
+
+    function registerSuccess() {
+        alert("注册成功")
+        window.location.href = "/static/login.html";
+    }
+
+    /*检查用户名*/
+    function checkUsername() {
+       var username = $("#username").val()
+       if(username != null && username != '') {
+           $("#usernameLabel").attr('class',"icon ticker")
+       }
+    }
+
+    /*检查真实姓名*/
+    function checkRealname() {
+        var realname = $("#realname").val()
+        if(realname != null && realname != '') {
+            $("#realnameLabel").attr('class',"icon ticker")
+        }
+    }
+
+    /*检查密码*/
+    function checkPassword() {
+        var password = $("#password").val()
+        var confirmPassword = $("#confirmPassword").val()
+        if((password != null && password != '') || (confirmPassword != null && confirmPassword != '')) {
+            if(password != confirmPassword) {
+                $("#passwordLabel").attr('class',"icon into")
+                $("#confirmPasswordLabel").attr('class',"icon into")
+            }else {
+                $("#passwordLabel").attr('class',"icon ticker")
+                $("#confirmPasswordLabel").attr('class',"icon ticker")
+            }
+        }
+
+    }
+    </script>
+
 </head>
 <body>
+<div class="main">
+    <div class="header">
+        <h1>成型条件记录管理系统
+        </h1>
+    </div>
+    <p>注册</p>
+    <form onsubmit="register()">
+        <ul class="left-form">
+            <h2>提示: 账号与密码长度最长15位</h2>
+            <li>
+                <input type="text" placeholder="账号" id="username" maxlength="15" onblur="checkUsername()"
+                       onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" required/>
+                <a href="#" id="usernameLabel"> </a>
+                <div class="clear"></div>
+            </li>
+            <li>
+                <input type="text" placeholder="真实姓名" id="realname" maxlength="15" onblur="checkRealname()" required/>
+                <a href="#" id="realnameLabel"> </a>
+                <div class="clear"></div>
+            </li>
+            <li>
+                <input type="password" placeholder="密码" id="password" maxlength="15" onblur="checkPassword()"
+                       onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" required/>
+                <a href="#" id="passwordLabel"> </a>
+                <div class="clear"></div>
+            </li>
+            <li>
+                <input type="password" placeholder="确认密码" id="confirmPassword" maxlength="15" onblur="checkPassword()"
+                       onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" required/>
+                <a href="#" id="confirmPasswordLabel"> </a>
+                <div class="clear"></div>
+            </li>
+            <br/>
+            <input type="submit" value="注册">
+            <div class="clear"></div>
+        </ul>
+        <div class="clear"></div>
+
+    </form>
+
+</div>
+<!-----start-copyright---->
+<div class="copy-right">
+    <p>©2019</p>
+</div>
+<!-----//end-copyright---->
+
 
 </body>
 </html>

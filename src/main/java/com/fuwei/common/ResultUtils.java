@@ -40,10 +40,10 @@ public class ResultUtils {
         return result;
     }
 
-    public static JSONObject error() {
+    public static JSONObject error(String msg) {
         JSONObject result = new JSONObject();
         result.put("code",ResultCode.SYSTEM_ERROR.getCode());
-        result.put("msg",ResultCode.SYSTEM_ERROR.getMsg());
+        result.put("msg",msg);
         return result;
     }
 

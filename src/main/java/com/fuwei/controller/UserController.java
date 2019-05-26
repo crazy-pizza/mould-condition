@@ -44,9 +44,7 @@ public class UserController {
         User dbUser = userService.login(user);
         String accessToken = UUID.randomUUID().toString();
         request.getSession().setAttribute(accessToken, dbUser);
-        Cookie cookie = new Cookie("accessToken", accessToken);
-        response.addCookie(cookie);
-        return ResultUtils.success(null);
+        return ResultUtils.success(accessToken);
     }
 
     /**

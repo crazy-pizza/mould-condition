@@ -9,7 +9,7 @@ public enum ResultCode {
     USERNAME_LOST("004","登陆账号必填"),
     PASSWORD_LOST("005","密码必填"),
     REALNAME_LOST("006","真实姓名必填"),
-    USERNAME_EXIST("007","登陆名已存在"),
+    USERNAME_EXIST("007","账号已存在"),
     MENU_NAME_LOST("008","菜单名称必填"),
     MENU_LEVEL_LOST("009","菜单等级必传"),
     NOT_ADMIN("010","非管理员用户不能操作"),

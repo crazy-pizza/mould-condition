@@ -15,3 +15,6 @@ server:
 mybatis:
   config-location: classpath:mybatis-config.xml
 
+logging:
+  level:
+    com.fuwei.mapper: info

@@ -27,7 +27,7 @@ public class DefaultExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public JSONObject errorHandler(Exception ex) {
         log.error("全局异常捕捉处理",ex);
-        return ResultUtils.error();
+        return ResultUtils.error(ex.toString());
     }
 
     /**

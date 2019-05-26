@@ -1,10 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <link href="css/style.css" rel='stylesheet' type='text/css'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="js/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="js/webAjax.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    }
+
+    function login() {
+        var data = {
+            username: $("#username").val(),
+            password: $("#password").val(),
+        }
+        sendRequest("/user/login", data, loginSuccess)
+    }
+
+    function loginSuccess(data) {
+        debugger
+        $.cookie('accessToken', data.data)
+        window.location.href = "/static/index.html";
+    }
+
+
+    </script>
+    <!--webfonts-->
+    <!--//webfonts-->
 </head>
 <body>
+<div class="main">
+    <div class="header">
+        <h1>登陆</h1>
+    </div>
+    <p>成型条件记录管理系统</p>
+    <form onsubmit="login()">
+        <ul class="right-form">
+            <h3>提示：忘记密码请联系管理员处理</h3>
+            <div>
+                <li><input type="text" id="username" placeholder="账号"
+                           onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" required/></li>
+                <li><input type="password" id="password" placeholder="密码"
+                           onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" required/></li>
+                <a href="register.html">没有账号？前去注册</a>
+                <input type="submit" value="登陆">
+            </div>
+            <div class="clear"></div>
+        </ul>
+        <div class="clear"></div>
+
+    </form>
+
+</div>
+<!-----start-copyright---->
+<div class="copy-right">
+    <p>©2019</p>
+</div>
+<!-----//end-copyright---->
+
 
 </body>
 </html>

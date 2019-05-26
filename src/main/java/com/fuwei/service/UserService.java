@@ -36,7 +36,7 @@ public class UserService {
     public synchronized void register(User user) {
         User query = new User();
         query.setUsername(user.getUsername());
-        User dbUser = userMapper.query(user);
+        User dbUser = userMapper.query(query);
         if(dbUser != null) {
             throw new BusinessException(ResultCode.USERNAME_EXIST);
         }
