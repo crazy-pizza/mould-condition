@@ -21,9 +21,9 @@
             return
         }
         var data = {
-            username: $("#username").val(),
-            password: $("#password").val(),
-            realname: $("#realname").val()
+            username: $("#username").val().replace(/\s+/g,""),
+            password: $("#password").val().replace(/\s+/g,""),
+            realname: $("#realname").val().replace(/\s+/g,"")
         }
         sendRequest("/user/out/register", data, registerSuccess)
 
@@ -76,35 +76,37 @@
     </div>
     <p>注册</p>
     <form onsubmit="register()">
-        <ul class="left-form">
-            <h2>提示: 账号与密码长度最长15位</h2>
-            <li>
-                <input type="text" placeholder="账号" id="username" maxlength="15" onblur="checkUsername()"
-                       onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" required/>
-                <a href="#" id="usernameLabel"> </a>
+        <div class="loginContent">
+            <ul class="left-form">
+                <h2>提示: 账号与密码长度最长15位</h2>
+                <li>
+                    <input type="text" placeholder="账号" id="username" maxlength="15" onblur="checkUsername()"
+                        onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" required/>
+                    <a href="#" id="usernameLabel"> </a>
+                    <div class="clear"></div>
+                </li>
+                <li>
+                    <input type="text" placeholder="姓名" id="realname" maxlength="15" onblur="checkRealname()" required/>
+                    <a href="#" id="realnameLabel"> </a>
+                    <div class="clear"></div>
+                </li>
+                <li>
+                    <input type="password" placeholder="密码" id="password" maxlength="15" onblur="checkPassword()"
+                        onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" required/>
+                    <a href="#" id="passwordLabel"> </a>
+                    <div class="clear"></div>
+                </li>
+                <li>
+                    <input type="password" placeholder="确认密码" id="confirmPassword" maxlength="15" onblur="checkPassword()"
+                        onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" required/>
+                    <a href="#" id="confirmPasswordLabel"> </a>
+                    <div class="clear"></div>
+                </li>
+                <br/>
+                <input type="submit" value="注册">
                 <div class="clear"></div>
-            </li>
-            <li>
-                <input type="text" placeholder="真实姓名" id="realname" maxlength="15" onblur="checkRealname()" required/>
-                <a href="#" id="realnameLabel"> </a>
-                <div class="clear"></div>
-            </li>
-            <li>
-                <input type="password" placeholder="密码" id="password" maxlength="15" onblur="checkPassword()"
-                       onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" required/>
-                <a href="#" id="passwordLabel"> </a>
-                <div class="clear"></div>
-            </li>
-            <li>
-                <input type="password" placeholder="确认密码" id="confirmPassword" maxlength="15" onblur="checkPassword()"
-                       onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" required/>
-                <a href="#" id="confirmPasswordLabel"> </a>
-                <div class="clear"></div>
-            </li>
-            <br/>
-            <input type="submit" value="注册">
-            <div class="clear"></div>
-        </ul>
+            </ul>
+        </div>
         <div class="clear"></div>
 
     </form>

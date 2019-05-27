@@ -5,9 +5,12 @@ function sendRequest(url,data,callback) {
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(data),
         dataType : 'json',
+        timeout : 20000,
         success: function (jsonResult) {
             //登陆失效
             if(jsonResult.code == 001){
+                alert(jsonResult.msg)
+                $.removeCookie('accessToken',{path:"/"})
                 window.location.href = "/static/login.html";
             }else if (jsonResult.code == 000) {
                 callback(jsonResult)
