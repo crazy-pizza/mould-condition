@@ -75,7 +75,7 @@
         </h1>
     </div>
     <p>注册</p>
-    <form onsubmit="register()">
+    <form>
         <div class="loginContent">
             <ul class="left-form">
                 <h2>提示: 账号与密码长度最长15位</h2>
@@ -83,6 +83,7 @@
                     <input type="text" placeholder="账号" id="username" maxlength="15" onblur="checkUsername()"
                         onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" required/>
                     <a href="#" id="usernameLabel"> </a>
+                    <div hidden>用户名已存在</div>
                     <div class="clear"></div>
                 </li>
                 <li>
@@ -103,7 +104,7 @@
                     <div class="clear"></div>
                 </li>
                 <br/>
-                <input type="submit" value="注册">
+                <input type="button" onclick="register()" value="注册">
                 <div class="clear"></div>
             </ul>
         </div>

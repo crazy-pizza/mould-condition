@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="css/style.css" rel='stylesheet' type='text/css'/>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="js/webAjax.js"></script>
+    <script type="application/x-javascript">
+        function queryUser(pageNum,pageSize) {
+            var data
+            if($("#searchKey").val() == null) {
+                data = {
+                    "pageNum":pageNum,
+                    "pageSize":pageSize
+                }
+            }else {
+                data = {
+                    "pageNum":pageNum,
+                    "pageSize":pageSize,
+                    searchKey: $("#searchKey").val().replace(/\s+/g,""),
+                }
+            }
+            sendRequest("/user/queryUserList", data,querySuccess)
+        }
+        function querySuccess(data) {
+            var list = data.data
+            var htmldata = ""
+            for(var i = 1; i <= list.length; i++) {
+                var ele = list[i-1]
+                var isAdmin
+                if(ele.isAdmin != null && ele.isAdmin == 2) {
+                    isAdmin = "admin"
+                }else {
+                    isAdmin = "普通用户"
+                }
+                htmldata += "<tr>";
+                htmldata += "<th scope=\"row\">" + i + "</th>";
+
+                htmldata += "<td>"
+                htmldata += ele.username
+                htmldata += "</td>"
+
+                htmldata += "<td>"
+                htmldata += ele.realname
+                htmldata += "</td>"
+
+                htmldata += "<td>"
+                htmldata += isAdmin
+                htmldata += "</td>"
+
+                htmldata += "<td>"
+                htmldata += "<a href='javascript:;' onclick='resetPassword(' + ele.userID+ ')'>重置密码</a>"
+                htmldata += "</td>"
+
+                htmldata += "</tr>"
+            };
+            document.getElementById("tbody").innerHTML = htmldata
+        }
+
+        function resetPassword(userID) {
+            data = {"userID": userID}
+            sendRequest("/user/resetPassword", data ,function () {
+                alert("执行成功")
+            })
+        }
+
+
+    </script>
+</head>
+<body>
+<div>
+
+    <form onsubmit="queryUser(1,10)">
+        <div class="loginContent">
+            <ul class="left-form">
+                <li>
+                    <input type="text" placeholder="按用户名称、账号搜索" id="searchKey" maxlength="20"/>
+                    <div class="clear"></div>
+                    <input type="submit" value="查询">
+                </li>
+                <div class="clear"></div>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </form>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">序号</th>
+        <th scope="col">账号</th>
+        <th scope="col">姓名</th>
+        <th scope="col">admin/普通用户</th>
+        <th scope="col">操作</th>
+    </tr>
+    </thead>
+    <tbody id="tbody">
+
+    </tbody>
+</table>
+</div>
+</body>
+</html>
