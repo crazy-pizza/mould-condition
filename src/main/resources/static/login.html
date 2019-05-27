@@ -24,7 +24,6 @@
     }
 
     function loginSuccess(data) {
-        $.cookie('accessToken', data.data,{path:"/"})
         window.location.href = "/static/index.html";
     }
 

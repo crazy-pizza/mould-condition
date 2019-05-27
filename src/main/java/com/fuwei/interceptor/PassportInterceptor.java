@@ -7,14 +7,10 @@ import com.fuwei.common.ResultUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * @author YuanChong
@@ -26,15 +22,10 @@ public class PassportInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
-        if(request.getCookies() != null) {
-            Optional<Cookie> accessToken = Arrays.stream(request.getCookies()).filter(cookie -> Objects.equals(cookie.getName(), "accessToken")).findFirst();
-            if(accessToken.isPresent()) {
-                User user = (User)request.getSession().getAttribute(accessToken.get().getValue());
-                if(user != null) {
-                    UserHolder.setUser(user);
-                    return true;
-                }
-            }
+        if(request.getSession() != null && request.getSession().getAttribute("accessToken") != null) {
+            User user = (User)request.getSession().getAttribute("accessToken");
+            UserHolder.setUser(user);
+            return true;
         }
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");

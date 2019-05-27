@@ -16,7 +16,6 @@ public class User {
     private Long userID;
     private Integer isAdmin; //1-普通用户 2-admin用户
 
-    private String accessToken;
     private Integer pageNum;
     private Integer pageSize;
     private String searchKey;

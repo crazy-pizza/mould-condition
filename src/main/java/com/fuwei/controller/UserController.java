@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.UUID;
 
 /**
  * @author YuanChong
@@ -44,11 +43,8 @@ public class UserController {
             throw new BusinessException(ResultCode.PASSWORD_LOST);
         }
         User dbUser = userService.login(user);
-        //生成token
-        String accessToken = UUID.randomUUID().toString();
-        dbUser.setAccessToken(accessToken);
-        request.getSession().setAttribute(accessToken, dbUser);
-        return ResultUtils.success(accessToken);
+        request.getSession().setAttribute("accessToken", dbUser);
+        return ResultUtils.success();
     }
 
     /**
@@ -78,9 +74,7 @@ public class UserController {
      */
     @RequestMapping("/logoff")
     public Object logoff(@UserResolver User user, HttpServletRequest request) {
-        if(StringUtils.isNotEmpty(user.getAccessToken())) {
-            request.getSession().removeAttribute(user.getAccessToken());
-        }
+        request.getSession().removeAttribute("accessToken");
         return ResultUtils.success();
     }
 

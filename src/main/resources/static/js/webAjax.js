@@ -10,7 +10,6 @@ function sendRequest(url,data,callback) {
             //登陆失效
             if(jsonResult.code == 001){
                 alert(jsonResult.msg)
-                $.removeCookie('accessToken',{path:"/"})
                 window.location.href = "/static/login.html";
             }else if (jsonResult.code == 000) {
                 callback(jsonResult)

@@ -47,6 +47,7 @@
                 AND LOWER(CONCAT(realname,';',username)) like LOWER(CONCAT('%', #{searchKey}, '%'))
             </if>
         </where>
+        ORDER BY isAdmin DESC
     </select>
 
 </mapper>
