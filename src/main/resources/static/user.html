@@ -212,7 +212,13 @@
                     {
                         "width": "6%", "targets": 3, "render": function (data, type, row, meta) {
 
-                            var option = "<a href='#' onclick='resetPassword(" + row.userID + ")'>重置密码</a>"
+                            var realname = "'" + row.realname + "'"
+
+
+                            var option = "<a href='#' " +
+                                                "onclick=resetPassword(" +
+                                                 row.userID +"," + realname +
+                                                ")>重置密码</a>"
                             return option
                         }
                     }]
@@ -221,8 +227,13 @@
             });
     } );
 
-    function resetPassword(userID) {
-        alert("确认操作？")
+    function resetPassword(userID,realname) {
+        var msg = realname+"的密码将被重置为123456\n\n确认操作？";
+        if (confirm(msg)){
+            sendRequest("/user/resetPassword",{"userID":userID},function () {
+                alert("重置成功")
+            })
+        }
     }
 </script>
 

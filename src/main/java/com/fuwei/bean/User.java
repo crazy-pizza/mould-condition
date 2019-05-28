@@ -19,4 +19,5 @@ public class User {
     private Integer pageNum;
     private Integer pageSize;
     private String searchKey;
+    private String oldPassword;
 }

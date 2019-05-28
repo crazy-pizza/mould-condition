@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author YuanChong
@@ -56,12 +57,34 @@ public class UserService {
         //加密 默认密码123456
         String encryptPassword = DigestUtils.md5Hex("123456");
         user.setPassword(encryptPassword);
-        userMapper.resetPassword(user);
+        userMapper.updatePassword(user);
 
     }
 
 
     public List<User> queryUserList(User user) {
         return userMapper.queryList(user);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void updatePassword(User user) {
+        User params = new User();
+        params.setUsername(user.getUsername());
+        //检查账号是否存在
+        User result = userMapper.query(params);
+        if(result == null) {
+            throw new BusinessException(ResultCode.USERNAME_NOT_EXISTS);
+        }
+        String encryptOldPassword = DigestUtils.md5Hex(user.getOldPassword());
+        //比对原始密码
+        if(!Objects.equals(encryptOldPassword,result.getPassword())) {
+            throw new BusinessException(ResultCode.OLD_PASSWORD_WRONG);
+        }
+
+        String encryptPassword = DigestUtils.md5Hex(user.getPassword());
+
+        user.setPassword(encryptPassword);
+        user.setUserID(result.getUserID());
+        userMapper.updatePassword(user);
     }
 }

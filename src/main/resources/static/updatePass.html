@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="css/style.css" rel='stylesheet' type='text/css'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="js/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="js/webAjax.js"></script>
+    <script type="application/x-javascript"> addEventListener("load", function () {
+        setTimeout(hideURLbar, 0);
+    }, false);
+
+
+    function hideURLbar() {
+        window.scrollTo(0, 1);
+    }
+
+    function updatePassword() {
+        debugger
+        if ($("#password").val() != $("#confirmPassword").val()) {
+            alert("两次输入的新密码不一致")
+            return
+        }
+        var data = {
+            username: $("#username").val().replace(/\s+/g,""),
+            password: $("#password").val().replace(/\s+/g,""),
+            oldPassword: $("#oldPassword").val().replace(/\s+/g,"")
+        }
+        sendRequest("/user/out/updatePassword", data, success)
+
+    }
+
+    function success() {
+        alert("重置成功")
+        window.location.href = "/static/login.html";
+    }
+
+    /*检查用户名*/
+    function checkUsername() {
+        var username = $("#username").val()
+        if(username != null && username != '') {
+            var data = {
+                "username":username
+            }
+            sendRequest("/user/out/checkUsername", data, function (data) {
+                if(data.data) {
+                    $("#usernameLabel").attr('class',"icon into")
+                }else {
+                    $("#usernameLabel").attr('class',"icon ticker")
+                }
+            })
+        }
+    }
+
+    function checkOldPassword() {
+        var oldPassword = $("#oldPassword").val()
+        if(oldPassword != null && oldPassword != '') {
+            $("#oldPasswordLabel").attr('class',"icon ticker")
+        }
+    }
+
+    /*检查密码*/
+    function checkPassword() {
+        var password = $("#password").val()
+        var confirmPassword = $("#confirmPassword").val()
+        if((password != null && password != '') || (confirmPassword != null && confirmPassword != '')) {
+            if(password != confirmPassword) {
+                $("#passwordLabel").attr('class',"icon into")
+                $("#confirmPasswordLabel").attr('class',"icon into")
+            }else {
+                $("#passwordLabel").attr('class',"icon ticker")
+                $("#confirmPasswordLabel").attr('class',"icon ticker")
+            }
+        }
+
+    }
+    </script>
+
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <h1>修改密码</h1>
+    </div>
+    <p>成型条件记录管理系统</p>
+    <form>
+        <div class="loginContent">
+            <ul class="left-form">
+                <h2>提示: 账号与密码长度最长15位</h2>
+                <li>
+                    <input type="text" placeholder="账号" id="username" maxlength="15" onblur="checkUsername()"
+                           onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" required/>
+                    <a href="#" id="usernameLabel"> </a>
+                    <div class="clear"></div>
+                </li>
+                <li>
+                    <input type="password" placeholder="原始密码" id="oldPassword" maxlength="15" onblur="checkOldPassword()"
+                           onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" required/>
+                    <a href="#" id="oldPasswordLabel"> </a>
+                    <div class="clear"></div>
+                </li>
+                <li>
+                    <input type="password" placeholder="新密码" id="password" maxlength="15" onblur="checkPassword()"
+                           onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" required/>
+                    <a href="#" id="passwordLabel"> </a>
+                    <div class="clear"></div>
+                </li>
+                <li>
+                    <input type="password" placeholder="确认新密码" id="confirmPassword" maxlength="15" onblur="checkPassword()"
+                           onkeyup="this.value=this.value.replace(/[^\w_]/g,'');" required/>
+                    <a href="#" id="confirmPasswordLabel"> </a>
+                    <div class="clear"></div>
+                </li>
+                <br/>
+                <button type="button" onclick="updatePassword()" style="width: 70px;height: 30px;border-radius: 3px;border: 1px solid #EBEBEB;">重置密码</button>
+                <div class="clear"></div>
+            </ul>
+        </div>
+        <div class="clear"></div>
+
+    </form>
+
+</div>
+<!-----start-copyright---->
+<div class="copy-right">
+    <p>©2019</p>
+</div>
+<!-----//end-copyright---->
+
+
+</body>
+</html>

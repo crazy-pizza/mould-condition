@@ -17,7 +17,7 @@ public interface UserMapper {
 
     void insert(User user);
 
-    void resetPassword(User user);
+    void updatePassword(User user);
 
     List<User> queryList(User user);
 }

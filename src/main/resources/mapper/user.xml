@@ -32,7 +32,7 @@
         )
     </insert>
 
-    <select id="resetPassword" parameterType="com.fuwei.bean.User">
+    <select id="updatePassword" parameterType="com.fuwei.bean.User">
         UPDATE user SET password = #{password} WHERE userID = #{userID}
     </select>
 

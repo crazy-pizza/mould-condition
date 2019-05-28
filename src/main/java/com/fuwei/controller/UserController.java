@@ -82,6 +82,27 @@ public class UserController {
         return ResultUtils.success(list.size() == 0);
     }
 
+    /**
+     * 校验用户名
+     * @param user
+     * @return
+     */
+    @RequestMapping("/out/updatePassword")
+    public Object updatePassword(@RequestBody User user) {
+        if (StringUtils.isEmpty(user.getUsername())) {
+            throw new BusinessException(ResultCode.USERNAME_LOST);
+        }
+        if (StringUtils.isEmpty(user.getPassword())) {
+            throw new BusinessException(ResultCode.PASSWORD_LOST);
+        }
+        if (StringUtils.isEmpty(user.getOldPassword())) {
+            throw new BusinessException(ResultCode.OLDPASSWORD_LOST);
+        }
+
+        userService.updatePassword(user);
+        return ResultUtils.success();
+    }
+
 
     /**
      * 登出

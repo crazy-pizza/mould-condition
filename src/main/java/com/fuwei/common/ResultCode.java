@@ -26,7 +26,10 @@ public enum ResultCode {
     PAGENO_LIMIT("021","pageNum必传"),
     PAGESIZE_LIMIT("022","pageSize必传"),
     RECORD_DATA_LIMIT("023","记录的数据必传"),
-    USERID_LOST("024","用户ID必传");
+    USERID_LOST("024","用户ID必传"),
+    OLDPASSWORD_LOST("025","原始密码必填"),
+    USERNAME_NOT_EXISTS("026","您输入的账号不存在"),
+    OLD_PASSWORD_WRONG("027","原始密码错误");
 
 
     private String code;
