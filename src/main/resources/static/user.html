@@ -1,114 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link href="css/style.css" rel='stylesheet' type='text/css'/>
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-    <script type="text/javascript" src="js/jquery-3.4.1.js"></script>
-    <script type="text/javascript" src="js/jquery.cookie.js"></script>
-    <script type="text/javascript" src="js/webAjax.js"></script>
-    <script type="application/x-javascript">
-        function queryUser(pageNum,pageSize) {
-            var data
-            if($("#searchKey").val() == null) {
-                data = {
-                    "pageNum":pageNum,
-                    "pageSize":pageSize
-                }
-            }else {
-                data = {
-                    "pageNum":pageNum,
-                    "pageSize":pageSize,
-                    searchKey: $("#searchKey").val().replace(/\s+/g,""),
-                }
-            }
-            sendRequest("/user/queryUserList", data,querySuccess)
-        }
-        function querySuccess(data) {
-            var list = data.data
-            var htmldata = ""
-            for(var i = 1; i <= list.length; i++) {
-                var ele = list[i-1]
-                var isAdmin
-                if(ele.isAdmin != null && ele.isAdmin == 2) {
-                    isAdmin = "admin"
-                }else {
-                    isAdmin = "普通用户"
-                }
-                htmldata += "<tr>";
-                htmldata += "<th scope=\"row\">" + i + "</th>";
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-                htmldata += "<td>"
-                htmldata += ele.username
-                htmldata += "</td>"
+    <title>成型条件记录管理系统</title>
 
-                htmldata += "<td>"
-                htmldata += ele.realname
-                htmldata += "</td>"
+    <link rel="import" href="import.html" id="page2"/>
 
-                htmldata += "<td>"
-                htmldata += isAdmin
-                htmldata += "</td>"
-
-                htmldata += "<td>"
-                htmldata += "<a href='javascript:;' onclick='resetPassword(' + ele.userID+ ')'>重置密码</a>"
-                htmldata += "</td>"
-
-                htmldata += "</tr>"
-            };
-            document.getElementById("tbody").innerHTML = htmldata
-        }
-
-        function resetPassword(userID) {
-            data = {"userID": userID}
-            sendRequest("/user/resetPassword", data ,function () {
-                alert("执行成功")
-            })
-        }
-
-
-    </script>
 </head>
-<body>
-<div>
 
-    <form onsubmit="queryUser(1,10)">
-        <div class="loginContent">
-            <ul class="left-form">
-                <li>
-                    <input type="text" placeholder="按用户名称、账号搜索" id="searchKey" maxlength="20"/>
-                    <div class="clear"></div>
-                    <input type="submit" value="查询">
-                </li>
-                <div class="clear"></div>
-            </ul>
+<body class="nav-md">
+
+<div class="container body">
+    <div class="main_container">
+
+        <div class="col-md-3 left_col">
+            <div class="left_col scroll-view">
+                <div class="navbar nav_title" style="border: 0;">
+                    <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>成型条件管理</span></a>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <!-- menu profile quick info -->
+                <div class="profile clearfix">
+                    <div class="profile_pic">
+                        <img src="images/timg.jpeg" alt="..." class="img-circle profile_img">
+                    </div>
+                    <div class="profile_info">
+                        <span>欢迎</span>
+                        <h2 class="login_user"></h2>
+                    </div>
+                </div>
+                <!-- /menu profile quick info -->
+
+                <br />
+
+                <!-- sidebar menu -->
+                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                    <div class="menu_section">
+                        <ul class="nav side-menu">
+
+                            <li style="display: none;" id="commonLi"><a><i class="fa fa-edit"></i> 成型条件 <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="form.html">记录管理</a></li>
+                                </ul>
+                            </li>
+                            <!--display: block;-->
+                            <li style="display: none;" id="adminLi"><a><i class="fa fa-clone"></i> admin <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu">
+                                    <li><a href="user.html">用户管理</a></li>
+                                    <li><a href="menu.html">菜单管理</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+                <!-- /sidebar menu -->
+
+                <!-- /menu footer buttons -->
+                <div class="sidebar-footer hidden-small">
+                    <a data-toggle="tooltip" data-placement="top" title="退出" onclick="logoff()" href="login.html">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                    </a>
+                </div>
+                <!-- /menu footer buttons -->
+            </div>
         </div>
-        <div class="clear"></div>
-    </form>
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th scope="col">序号</th>
-        <th scope="col">账号</th>
-        <th scope="col">姓名</th>
-        <th scope="col">admin/普通用户</th>
-        <th scope="col">操作</th>
-    </tr>
-    </thead>
-    <tbody id="tbody">
 
-    </tbody>
-</table>
+        <!-- top navigation -->
+        <div class="top_nav">
+            <div class="nav_menu">
+                <nav>
+                    <div class="nav toggle">
+                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                    </div>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="">
+                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <img src="images/timg.jpeg" alt=""><span class="login_user"></span>
+                                <span class=" fa fa-angle-down"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                <li><a href="login.html" onclick="logoff()"><i class="fa fa-sign-out pull-right"></i> 退出</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+            用户管理
+            <div class="clearfix"></div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+
+        <!-- /footer content -->
+    </div>
 </div>
+
+
 </body>
 </html>
