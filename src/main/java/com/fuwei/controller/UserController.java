@@ -78,7 +78,7 @@ public class UserController {
         if (StringUtils.isEmpty(user.getUsername())) {
             throw new BusinessException(ResultCode.USERNAME_LOST);
         }
-        List<User> list = userService.queryUser(user);
+        List<User> list = userService.queryUserList(user);
         return ResultUtils.success(list.size() == 0);
     }
 
@@ -118,15 +118,9 @@ public class UserController {
      * @return
      */
     @RequestMapping("/queryUserList")
-    public Object queryUserList(@RequestBody User user) {
-        if(user.getPageNum() == null || user.getPageNum() == 0L) {
-            throw new BusinessException(ResultCode.PAGENO_LIMIT);
-        }
-        if(user.getPageSize() == null || user.getPageSize() == 0L) {
-            throw new BusinessException(ResultCode.PAGESIZE_LIMIT);
-        }
-        PageInfo<Condition> pageInfo = userService.queryUserList(user);
-        return ResultUtils.pageSuccess(pageInfo);
+    public Object queryUserList(User user) {
+        List<User> list = userService.queryUserList(user);
+        return ResultUtils.success(list);
     }
 
     /**
