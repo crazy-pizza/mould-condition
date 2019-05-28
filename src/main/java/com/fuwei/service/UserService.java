@@ -60,10 +60,14 @@ public class UserService {
 
     }
 
-    public PageInfo<Condition> queryUser(User user) {
+    public PageInfo<Condition> queryUserList(User user) {
         PageHelper.startPage(user.getPageNum(),user.getPageSize());
         List<User> list = userMapper.queryList(user);
         PageInfo<Condition> pageInfo = new PageInfo(list);
         return pageInfo;
+    }
+
+    public List<User> queryUser(User user) {
+        return userMapper.queryList(user);
     }
 }

@@ -46,6 +46,9 @@
             <if test="searchKey != null and searchKey != ''">
                 AND LOWER(CONCAT(realname,';',username)) like LOWER(CONCAT('%', #{searchKey}, '%'))
             </if>
+            <if test="username != null and username != '' ">
+                AND username = #{username}
+            </if>
         </where>
         ORDER BY isAdmin DESC
     </select>

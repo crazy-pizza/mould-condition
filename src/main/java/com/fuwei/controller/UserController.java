@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @author YuanChong
@@ -68,6 +69,21 @@ public class UserController {
     }
 
     /**
+     * 校验用户名
+     * @param user
+     * @return
+     */
+    @RequestMapping("/out/checkUsername")
+    public Object checkUsername(@RequestBody User user) {
+        if (StringUtils.isEmpty(user.getUsername())) {
+            throw new BusinessException(ResultCode.USERNAME_LOST);
+        }
+        List<User> list = userService.queryUser(user);
+        return ResultUtils.success(list.size() == 0);
+    }
+
+
+    /**
      * 登出
      * @param
      * @return
@@ -109,7 +125,7 @@ public class UserController {
         if(user.getPageSize() == null || user.getPageSize() == 0L) {
             throw new BusinessException(ResultCode.PAGESIZE_LIMIT);
         }
-        PageInfo<Condition> pageInfo = userService.queryUser(user);
+        PageInfo<Condition> pageInfo = userService.queryUserList(user);
         return ResultUtils.pageSuccess(pageInfo);
     }
 
