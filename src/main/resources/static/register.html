@@ -38,7 +38,16 @@
     function checkUsername() {
        var username = $("#username").val()
        if(username != null && username != '') {
-           $("#usernameLabel").attr('class',"icon ticker")
+           var data = {
+               "username":username
+           }
+           sendRequest("/user/out/checkUsername", data, function (data) {
+               if(data.data) {
+                   $("#usernameLabel").attr('class',"icon ticker")
+               }else {
+                   $("#usernameLabel").attr('class',"icon into")
+               }
+           })
        }
     }
 
@@ -103,7 +112,7 @@
                     <div class="clear"></div>
                 </li>
                 <br/>
-                <input type="button" onclick="register()" value="注册">
+                <button type="button" onclick="register()" style="width: 70px;height: 30px;border-radius: 3px;border: 1px solid #EBEBEB;">注册</button>
                 <div class="clear"></div>
             </ul>
         </div>
