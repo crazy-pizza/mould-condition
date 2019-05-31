@@ -55,5 +55,7 @@
     <mappers>
         <mapper resource="mapper/user.xml" />
         <mapper resource="mapper/menu.xml" />
+        <mapper resource="mapper/condition.xml" />
+        <mapper resource="mapper/record.xml" />
     </mappers>
 </configuration>
