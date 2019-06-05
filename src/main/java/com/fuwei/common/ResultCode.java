@@ -29,7 +29,8 @@ public enum ResultCode {
     USERID_LOST("024","用户ID必传"),
     OLDPASSWORD_LOST("025","原始密码必填"),
     USERNAME_NOT_EXISTS("026","您输入的账号不存在"),
-    OLD_PASSWORD_WRONG("027","原始密码错误");
+    OLD_PASSWORD_WRONG("027","原始密码错误"),
+    DELETE_MENU_WRONG("028","不能删除已存在数据的菜单");
 
 
     private String code;

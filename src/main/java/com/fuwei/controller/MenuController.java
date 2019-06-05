@@ -75,7 +75,6 @@ public class MenuController {
 
     /**
      * 删除菜单 非管理员用户不能操作
-     * 高危操作 会把所有人的这个菜单下的数据都删掉！！！
      * @param menu
      * @param user
      * @return

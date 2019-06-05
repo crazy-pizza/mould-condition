@@ -48,12 +48,15 @@ public class MenuService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void deleteMenu(Menu menu) {
-        //删菜单
-        menuMapper.delete(menu);
         //查菜单被哪些数据所用
         Record record = new Record();
         record.setMenuID(menu.getMenuID());
-        recordMapper.delete(record);
+        List<Record> query = recordMapper.query(record);
+        if(query.size() > 0) {
+            throw new BusinessException(ResultCode.DELETE_MENU_WRONG);
+        }
+        //删菜单
+        menuMapper.delete(menu);
     }
 
     @Transactional(rollbackFor = Exception.class)
