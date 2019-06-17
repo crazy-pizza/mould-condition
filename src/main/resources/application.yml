@@ -17,4 +17,4 @@ mybatis:
 
 logging:
   level:
-    com.fuwei.mapper: info
+    com.fuwei.mapper: DEBUG
