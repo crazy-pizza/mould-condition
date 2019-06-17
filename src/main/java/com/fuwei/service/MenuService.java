@@ -147,6 +147,14 @@ public class MenuService {
     public void activeMenu(Menu menu) {
         List<Long> menuIDList = new ArrayList<>();
         queryAllChild(menu.getMenuID(),menuIDList);
+        //如果是启用菜单 要把当前菜单的父级都启用
+        if(menu.getAction() == 1 && menu.getParentID() != 0) {
+            Menu params = new Menu();
+            params.setMenuID(menu.getParentID());
+            Menu parent = menuMapper.query(params).get(0);
+            menuIDList.add(menu.getParentID());
+            menuIDList.add(parent.getParentID());
+        }
         String menuIDs = menuIDList.stream().map(String::valueOf).collect(Collectors.joining(","));
         Menu params = new Menu();
         params.setMenuIDs(menuIDs);

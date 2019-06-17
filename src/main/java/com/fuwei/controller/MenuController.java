@@ -82,6 +82,9 @@ public class MenuController {
         if(menu.getAction() == null || menu.getAction() == 0) {
             throw new BusinessException("018","状态必传");
         }
+        if(menu.getParentID() == null) {
+            throw new BusinessException("018","父ID必传");
+        }
         menuService.activeMenu(menu);
         return ResultUtils.success();
     }

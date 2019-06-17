@@ -287,7 +287,7 @@
         if ($(e.target).hasClass('isActiveMenu')) {
             var data = $(e.target).attr("dataMenuInfo").split("_")
             var action = data[2] == 1? 2:1
-            var request = {"menuID":data[0],action:action}
+            var request = {"menuID":data[0],action:action,"parentID":data[3]}
             sendRequest("/menu/activeMenu",request);
             clear()
             window.location.reload()

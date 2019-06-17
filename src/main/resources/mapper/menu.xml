@@ -18,6 +18,9 @@
             <if test="action != null and action != ''">
                 AND action = #{action}
             </if>
+            <if test="menuID != null and menuID != ''">
+                AND menuID = #{menuID}
+            </if>
         </where>
     </select>
 
