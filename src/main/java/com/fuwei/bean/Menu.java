@@ -19,4 +19,5 @@ public class Menu {
     private Integer action;
     private Long excludeID;
     private List<Menu> childList;
+    private String menuIDs;
 }

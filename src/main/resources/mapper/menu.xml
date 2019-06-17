@@ -57,7 +57,14 @@
             action=#{action},
         </if>
         actionTime=date_format( now() ,'%Y%m%d%H%i%s')
-        WHERE menuID = #{menuID}
+        <where>
+            <if test="menuID != null and menuID != ''">
+                AND menuID = #{menuID}
+            </if>
+            <if test="menuIDs != null and menuIDs != ''">
+                AND menuID IN (${menuIDs})
+            </if>
+        </where>
     </update>
 
 

@@ -50,7 +50,7 @@ public class MenuController {
 
 
     /**
-     * 添加菜单 非管理员用户不能操作
+     * 修改菜单 非管理员用户不能操作
      * @param menu
      * @param user
      * @return
@@ -63,13 +63,26 @@ public class MenuController {
         if(StringUtils.isEmpty(menu.getMenuName())) {
             throw new BusinessException(ResultCode.MENU_NAME_LOST);
         }
-        if(menu.getMenuLevel() == null || menu.getMenuLevel() == 0) {
-            throw new BusinessException(ResultCode.MENU_LEVEL_LOST);
-        }
-        if(menu.getMenuID() == null || menu.getMenuID() == 0L) {
-            throw new BusinessException(ResultCode.MENUID_LOST);
-        }
         menuService.updateMenu(menu);
+        return ResultUtils.success();
+    }
+
+
+    /**
+     * 启用禁用菜单 非管理员用户不能操作
+     * @param menu
+     * @param user
+     * @return
+     */
+    @RequestMapping("/activeMenu")
+    public Object activeMenu(@RequestBody Menu menu, @UserResolver User user) {
+        if(user.getIsAdmin() != 2) {
+            throw new BusinessException(ResultCode.NOT_ADMIN);
+        }
+        if(menu.getAction() == null || menu.getAction() == 0) {
+            throw new BusinessException("018","状态必传");
+        }
+        menuService.activeMenu(menu);
         return ResultUtils.success();
     }
 

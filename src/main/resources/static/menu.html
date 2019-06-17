@@ -9,8 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>成型条件记录管理系统</title>
-
+    <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/menuStyle.css">
     <link rel="import" href="import.html" id="page2"/>
+
 
 </head>
 
@@ -109,11 +111,65 @@
                 </div>
                 <div class="clearfix"></div>
 
-                
-                <div id="menuTree"></div>
 
+                <button  class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">新增菜单</button>
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    操作菜单
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                菜单名称: <input type="text" name="menuName" id="menuName"/>
+                                         <input type="hidden" name="parentID" id="parentID">
+                                         <input type="hidden" name="menuLevel" id="menuLevel" value="1">
+                                         <input type="hidden" name="menuID" id="menuID">
+                                         <input type="hidden" name="actionType" id="actionType">
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                </button>
+                                <button type="button" class="btn btn-primary" onclick="editMenu()">
+                                    提交
+                                </button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal -->
+                </div>
+
+
+
+                <div class="htmleaf-container">
+                    <ul class="menu">
+                        <!--<li class="list top first">
+                            <a href="javascript: void(0);"> 一级菜单1 </a>
+                            <a href="javascript:void(0);" class="addType">操作</a>
+                            <ul class="items">
+                                <li class="second">
+                                    <a href="javascript: void(0);"> 二级菜单1</a>
+                                    <a href="javascript:void(0);" class="addType">操作</a>
+                                </li>
+                                <li class="list second">
+                                    <a href="javascript: void(0);"> 二级菜单2</a>
+                                    <a href="javascript:void(0);" class="addType">操作</a>
+                                    <ul class="items">
+                                        <li class="third">
+                                            <a href="javascript: void(0);"> 三级菜单1</a>
+                                            <a href="javascript:void(0);" class="addType">操作</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>-->
+                    </ul>
+                </div>
             </div>
-
             <div class="clearfix"></div>
         </div>
         <!-- /page content -->
@@ -124,61 +180,165 @@
     </div>
 </div>
 
-<script>
-    sendRequest("/menu/queryMenu",{"action":1},function (data) {
-        debugger
+<script type="text/javascript">
+    function loadMenu(data) {
         var menuList = data.data
+        var innerHtml = ""
+        for ( var i = 0; i <menuList.length; i++){
+            //判断一级菜单是否有子菜单 来决定要不要加list class
+            innerHtml += "<li class=\"list top first\" >";
 
-        var defaultData = [
-            {
-                text: 'Parent 1',
-                href: '#parent1',
-                nodes: [
-                    {
-                        text: 'Child 1',
-                        href: '#child1',
-                        nodes: [
-                            {
-                                text: 'Grandchild 1',
-                                href: '#grandchild1',
-                            },
-                            {
-                                text: 'Grandchild 2',
-                                href: '#grandchild2',
-                            }
-                        ]
-                    },
-                    {
-                        text: 'Child 2',
-                        href: '#child2',
+            var isActive = menuList[i].action == 1?"   (启用中)":"   (禁用中)"
+            var oneData = menuList[i].menuID + "_" + menuList[i].menuLevel + "_" + menuList[i].action + "_" + menuList[i].parentID
+            innerHtml += "<a href=\"javascript: void(0);\"  dataMenuInfo="+ oneData +">" + menuList[i].menuName + isActive +"</a>"
+            innerHtml += "<a href=\"javascript:void(0);\" class=\"addType\" dataMenuInfo=" + oneData + ">操作  </a>";
+            //有二级菜单的情况
+            if(menuList[i].childList != null && menuList[i].childList.length > 0) {
+                innerHtml += "<ul class=\"items\">"
+                for( var j = 0; j <menuList[i].childList.length; j++) {
+                    //判断二级菜单是否有子菜单 来决定要不要加list class
+                    var twoMenu = menuList[i].childList[j]
+                    innerHtml += "<li class=\"list second\" >"
+
+                    var isActiveTwo = twoMenu.action == 1?"   (启用中)":"   (禁用中)"
+                    var twoData = twoMenu.menuID + "_" + twoMenu.menuLevel + "_" + twoMenu.action + "_" + twoMenu.parentID
+                    innerHtml += "<a href=\"javascript: void(0);\" dataMenuInfo="+ twoData +">" + twoMenu.menuName + isActiveTwo + "</a>"
+                    innerHtml += "<a href=\"javascript:void(0);\" class=\"addType\" dataMenuInfo=" + twoData + ">操作  </a>"
+                    if(twoMenu.childList != null && twoMenu.childList.length > 0) {
+                        innerHtml += "<ul class=\"items\">"
+                        //铺三级菜单
+                        for(var p = 0; p <twoMenu.childList.length; p++) {
+                            var threeMenu = twoMenu.childList[p]
+                            var isActiveThree = threeMenu.action == 1?"   (启用中)":"   (禁用中)"
+                            var threeData = threeMenu.menuID + "_" + threeMenu.menuLevel + "_" + threeMenu.action + "_" + threeMenu.parentID
+                            innerHtml += "<li class=\"third\">"
+                            innerHtml += "<a href=\"javascript: void(0);\" dataMenuInfo="+ threeData +">" +threeMenu.menuName + isActiveThree + "</a>"
+                            innerHtml += "<a href=\"javascript:void(0);\" class=\"addType\" dataMenuInfo=" +threeData+">操作  </a>"
+                            innerHtml += "</li>"
+                        }
+                        innerHtml += "</ul>"
                     }
-                ]
-            },
-            {
-                text: 'Parent 2',
-                href: '#parent2',
-            },
-            {
-                text: 'Parent 3',
-                href: '#parent3',
-            },
-            {
-                text: 'Parent 4',
-                href: '#parent4',
-            },
-            {
-                text: 'Parent 5',
-                href: '#parent5'  ,
+                    innerHtml += "</li>"
+                }
+                innerHtml += "</ul>"
             }
-        ];
-        $('#menuTree').treeview({
-            expandIcon: 'glyphicon glyphicon-chevron-right',
-            collapseIcon: 'glyphicon glyphicon-chevron-down',
-            levels: 1,
-            data: menuList
-        });
-    })
+            innerHtml += "</li>";
+        }
+        document.getElementsByClassName("menu")[0].innerHTML = innerHtml
+        var list = document.querySelectorAll('.list');
+        var addType = document.querySelectorAll('.addType');
 
+        for (i = 0; i < addType.length; i++) {
+            addType[i].addEventListener('click', addTypeAction);
+        }
+        for (i = 0; i < list.length; i++) {
+            list[i].addEventListener('click', accordion);
+        }
+    }
+
+    function addTypeAction(e){
+        var parentEl = $(e.target.parentNode)
+        var value = e.currentTarget.attributes.dataMenuInfo.value
+        var data = value.split("_")
+        if (parentEl.find('.actionContent').length !== 0) {
+            parentEl.find('.actionContent').remove();
+        } else {
+            var ele = '<div class="actionContent">'
+            if(data[1]!= 3) {
+                ele += '<span class="addMenu" dataMenuInfo=' +value+ '>新增</span>'
+            }
+            ele +=  '<span class="updateMenu" dataMenuInfo=' +value+ '>修改</span>'
+            if(data[2] ==1) {
+                ele += '<span class="isActiveMenu" dataMenuInfo=' +value+ '>禁用</span>'
+            }else {
+                ele += '<span class="isActiveMenu" dataMenuInfo=' +value+ '>启用</span>'
+            }
+            ele +=  '<span class="deleteMenu" dataMenuInfo=' +value+ '>删除</span>'
+            ele += '</div>'
+
+            parentEl.prepend(ele)
+        }
+        e.stopPropagation();
+    }
+    function accordion(e) {
+        var parentEl = $(e.target.parentNode)
+        if ($('.actionContent').length !== 0 && !$(e.target).hasClass('addMenu') && !$(e.target).hasClass('deleteMenu')) {
+            $('.actionContent').remove();
+        }
+        if (!parentEl.hasClass('active') && $(parentEl).find('.items').length) {
+            parentEl.addClass('active')
+        } else if (parentEl.hasClass('active')) {
+            parentEl.removeClass('active')
+        }
+        if ($(e.target).hasClass('addMenu')) {
+            var data = $(e.target).attr("dataMenuInfo").split("_")
+            document.getElementById("parentID").value = data[0]
+            document.getElementById("menuLevel").value = (parseInt(data[1]) +1)
+            $('#myModal').modal('show')
+
+        }
+        if ($(e.target).hasClass('updateMenu')) {
+            var data = $(e.target).attr("dataMenuInfo").split("_")
+            document.getElementById("menuID").value = data[0]
+            document.getElementById("actionType").value = 1
+            $('#myModal').modal('show')
+
+        }
+        if ($(e.target).hasClass('isActiveMenu')) {
+            var data = $(e.target).attr("dataMenuInfo").split("_")
+            var action = data[2] == 1? 2:1
+            var request = {"menuID":data[0],action:action}
+            sendRequest("/menu/activeMenu",request);
+            clear()
+            window.location.reload()
+        }
+        if ($(e.target).hasClass('deleteMenu')) {
+            var data = $(e.target).attr("dataMenuInfo").split("_")
+            var request = {"menuID":data[0]}
+            sendRequest("/menu/deleteMenu",request);
+            clear()
+            window.location.reload()
+        }
+
+
+        if ($(e.target).hasClass('deleteMenu') && !$(e.target).closest('li').hasClass('top')) {
+            $(e.target).closest('li').remove()
+        }
+        e.stopPropagation();
+    }
+
+    function clear() {
+        document.getElementById("menuName").value = ""
+        document.getElementById("menuID").value = ""
+        document.getElementById("parentID").value = ""
+        document.getElementById("menuLevel").value = ""
+        document.getElementById("actionType").value = ""
+    }
+
+    function editMenu() {
+        var menuName = document.getElementById("menuName")
+        var menuID = document.getElementById("menuID")
+        var parentID = document.getElementById("parentID")
+        var menuLevel = document.getElementById("menuLevel")
+        var actionType = document.getElementById("actionType")
+        var data = {"menuName":menuName.value,"menuLevel":menuLevel.value,"menuID":menuID.value,"parentID":parentID.value}
+        var method = actionType.value == 1 ? "/menu/updateMenu":"/menu/addMenu"
+        sendRequest(method,data,function (data) {
+            $('#myModal').modal('hide')
+        })
+        clear()
+        window.location.reload()
+    }
+
+    $(document).ready(function () {
+        sendRequest("/menu/queryMenu",{},loadMenu);
+        $('html').click(function(){
+            if ($('.actionContent').length !== 0) {
+                $('.actionContent').remove();
+            }
+        })
+
+    })
 
 </script>
 

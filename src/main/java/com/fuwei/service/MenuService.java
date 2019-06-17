@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -43,7 +44,7 @@ public class MenuService {
     }
 
     /**
-     * 删除菜单 高危操作 会把所有人的这个菜单下的数据都删掉！！！
+     * 删除菜单
      * @param menu
      */
     @Transactional(rollbackFor = Exception.class)
@@ -56,6 +57,12 @@ public class MenuService {
             throw new BusinessException(ResultCode.DELETE_MENU_WRONG);
         }
         //删菜单
+        Menu params = new Menu();
+        params.setParentID(menu.getMenuID());
+        List<Menu> list = menuMapper.query(params);
+        if(list.size() > 0) {
+            throw new BusinessException("018","菜单下有子菜单，不能删除");
+        }
         menuMapper.delete(menu);
     }
 
@@ -131,6 +138,34 @@ public class MenuService {
             }
         }
         return menuList;
+    }
+
+    /**
+     * 启用禁用菜单
+     * @param menu
+     */
+    public void activeMenu(Menu menu) {
+        List<Long> menuIDList = new ArrayList<>();
+        queryAllChild(menu.getMenuID(),menuIDList);
+        String menuIDs = menuIDList.stream().map(String::valueOf).collect(Collectors.joining(","));
+        Menu params = new Menu();
+        params.setMenuIDs(menuIDs);
+        params.setAction(menu.getAction());
+        menuMapper.update(params);
+    }
+
+
+    void queryAllChild(Long parentID, List<Long> result) {
+        result.add(parentID);
+        Menu params = new Menu();
+        params.setParentID(parentID);
+        //拿到子菜单
+        List<Menu> menuList = menuMapper.query(params);
+        if(menuList.size() > 0) {
+            for(Menu menu:menuList) {
+                queryAllChild(menu.getMenuID(),result);
+            }
+        }
     }
 
 

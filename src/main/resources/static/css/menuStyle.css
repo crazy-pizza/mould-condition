@@ -1,0 +1,154 @@
+body {
+  padding: 0;
+  margin: 0;
+ 
+}
+
+h1 {
+  font-family: 'Century Gothic';
+  margin: 30px auto 30px auto;
+  color: #09fbd2;
+  width: 100%;
+  text-align: center;
+}
+
+ul.menu {
+  padding: 0;
+  list-style: none;
+  width: 400px;
+  margin: 20px auto;
+  font-family: 'Century Gothic';
+  box-shadow: 0px 0px 25px #00000070;
+  clear: both;
+  display: table;
+}
+ul.menu .list {
+  font-size: 14px;
+  border-bottom: 1px solid #324252;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  height: 50px;
+  vertical-align: sub;
+  background: #3e5165;
+  clear: both;
+}
+ul.menu .list:after {
+  content: "\f107";
+  font-family: FontAwesome;
+  position: absolute;
+  right: 17px;
+  top: 17px;
+  padding: 0px 5px;
+  color: #fff;
+}
+.second{
+  position: relative;
+  padding-left: 57px !important;
+}
+.second > a{
+  padding-left: 17px !important;
+  height: 50px !important;
+}
+.third{
+  position: relative;
+}
+.actionContent{
+  position: absolute;
+  top: 41px;
+  right: 12px;
+  border: 1px solid #ddd;
+  color: #fff;
+  font-size: 12px;
+  z-index: 999;
+  background-color: #23313f;
+}
+.actionContent > span {
+  padding: 10px 20px;
+  display: block;
+}
+.actionContent > span:not(:last-child) {
+  padding-bottom: 10px;
+}
+ul.menu .list a:not(.addType) {
+  text-decoration: none;
+  color: #fff;
+  padding: 17px 0px 17px 45px;
+  display: block;
+  height: 100%;
+  box-sizing: border-box;
+}
+ul.menu .list a.addType{
+  text-decoration: none;
+  color: #fff;
+  position: absolute;
+  top: 0;
+  right: 25px;
+  height: 16px !important;
+  padding: 17px !important;
+  width: 62px;
+  display: inline-block;
+}
+ul.menu .list a:hover:not(.addType) {
+  transition: 300ms all;
+  color: #09fbd2;
+}
+ul.menu .list .items {
+  height: 0px;
+  display: none;
+}
+ul.menu .list .items a {
+  padding: 17px;
+}
+ul.menu .list .items a:hover {
+  color: #09fbd2;
+  transition: 300ms all;
+}
+ul.menu .list:last-child {
+  border-bottom: none;
+}
+ul.menu .active:after {
+  content: "\f106";
+  font-family: FontAwesome;
+  position: absolute;
+  right: 17px;
+  top: 17px;
+  padding: 0px 5px;
+  color: #fff;
+}
+ul.menu .active > .items,
+ul.items .active > .items {
+  display: block;
+  background: #23313f !important;
+  padding: 0px;
+  height: auto;
+  color: #fff;
+  transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: all 200ms;
+  clear: both;
+  float: left;
+  width: 100%;
+}
+ul.menu .active > .items li {
+  padding: 0px;
+  border-bottom: 1px solid #324252;
+  list-style: none;
+}
+ul.menu .active > .items li:last-child {
+  border-color: transparent;
+  padding-bottom: 0px;
+}
+ul.menu .active > .items .active > .items {
+  background-color: #2f4b67;
+}
+ul.menu .active > a {
+  color: #46efa4;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+ul.menu .active .list {
+  background: #697d92;
+}
+ul.menu .active .list a {
+  padding: 17px 0px 17px 45px;
+}
