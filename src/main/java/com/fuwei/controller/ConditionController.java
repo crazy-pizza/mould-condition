@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author YuanChong
  * @create 2019-05-26 11:05
@@ -44,10 +46,10 @@ public class ConditionController {
         if (StringUtils.isEmpty(condition.getRobotKind())) {
             throw new BusinessException(ResultCode.ROBOTKIND_LOST);
         }
-        if (condition.getDate() == null || condition.getDate() == 0L) {
+        if (StringUtils.isEmpty(condition.getDate())) {
             throw new BusinessException(ResultCode.DATE_LOST);
         }
-        if (condition.getTime() == null || condition.getTime() == 0L) {
+        if (StringUtils.isEmpty(condition.getTime())) {
             throw new BusinessException(ResultCode.TIME_LOST);
         }
         condition.setUserID(user.getUserID());
@@ -67,6 +69,21 @@ public class ConditionController {
     public Object updateCondition(@RequestBody Condition condition, @UserResolver User user) {
         if (condition.getConditionID() == null || condition.getConditionID() == 0L) {
             throw new BusinessException(ResultCode.CONDITIONID_LOST);
+        }
+        if (StringUtils.isEmpty(condition.getMouldNum())) {
+            throw new BusinessException(ResultCode.MOULDNUM_LOST);
+        }
+        if (StringUtils.isEmpty(condition.getMachineNum())) {
+            throw new BusinessException(ResultCode.MACHINENUM_LOST);
+        }
+        if (StringUtils.isEmpty(condition.getRobotKind())) {
+            throw new BusinessException(ResultCode.ROBOTKIND_LOST);
+        }
+        if (StringUtils.isEmpty(condition.getDate())) {
+            throw new BusinessException(ResultCode.DATE_LOST);
+        }
+        if (StringUtils.isEmpty(condition.getTime())) {
+            throw new BusinessException(ResultCode.TIME_LOST);
         }
         condition.setUserID(user.getUserID());
         condition.setIsAdmin(user.getIsAdmin());
@@ -93,21 +110,15 @@ public class ConditionController {
     }
 
     /**
-     * 分页查询条件记录主信息
+     * 查询条件记录主信息
      * @param condition
      * @param user
      * @return
      */
     @RequestMapping("/queryCondition")
     public Object queryCondition(@RequestBody Condition condition, @UserResolver User user) {
-        if(condition.getPageNum() == null || condition.getPageNum() == 0L) {
-            throw new BusinessException(ResultCode.PAGENO_LIMIT);
-        }
-        if(condition.getPageSize() == null || condition.getPageSize() == 0L) {
-            throw new BusinessException(ResultCode.PAGESIZE_LIMIT);
-        }
-        PageInfo<Condition> pageInfo = conditionService.queryCondition(condition);
-        return ResultUtils.pageSuccess(pageInfo);
+        List<Condition> list = conditionService.queryCondition(condition);
+        return ResultUtils.success(list);
     }
 
 }

@@ -20,14 +20,12 @@
         <if test="conditionID != null and conditionID != ''">conditionID,</if>
         <if test="menuID != null and menuID != ''">menuID,</if>
         <if test="data != null and data != ''">data,</if>
-        <if test="date != null and date != ''">action,</if>
         actionTime,
         createTime
         )values(
         <if test="conditionID != null and conditionID != ''">#{conditionID},</if>
         <if test="menuID != null and menuID != ''">#{menuID},</if>
         <if test="data != null and data != ''">#{data},</if>
-        <if test="date != null and date != ''">#{date},</if>
         date_format( now() ,'%Y%m%d%H%i%s'),
         date_format( now() ,'%Y%m%d%H%i%s'))
     </insert>

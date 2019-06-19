@@ -12,10 +12,10 @@
 <link href="vendors/pnotify/dist/pnotify.css" rel="stylesheet">
 <link href="vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
 <link href="vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+<link href="vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
 
 <!-- Custom Theme Style -->
 <link href="css/custom.min.css" rel="stylesheet">
-
 
 <!-- jQuery -->
 <script src="vendors/jquery/dist/jquery.min.js"></script>
@@ -27,7 +27,6 @@
 <script src="vendors/nprogress/nprogress.js"></script>
 <!-- bootstrap-progressbar -->
 <script src="vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-<!-- iCheck -->
 <script src="vendors/iCheck/icheck.min.js"></script>
 <!-- PNotify -->
 <script src="vendors/pnotify/dist/pnotify.js"></script>
@@ -46,30 +45,36 @@
 <script src="vendors/jszip/dist/jszip.min.js"></script>
 <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
 <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
-
+<script src="vendors/moment/min/moment.min.js"></script>
+<!-- bootstrap-datetimepicker -->
+<script src="vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <!-- Custom Theme Scripts -->
 <script src="js/custom.min.js"></script>
 
 <script type="text/javascript" src="js/webAjax.js"></script>
 
 <script>
-    sendRequest("/user/loginUser", {}, function (data) {
-        var user = data.data
-        if(user != null) {
-            var ele_list = document.getElementsByClassName("login_user");
-            for (var i = 0; i < ele_list.length; i++) {
-                ele_list[i].innerHTML = user.realname
+    var user
+    window.onload = function () {
+        sendRequest("/user/loginUser", {}, function (data) {
+            user = data.data
+            if (user != null) {
+                var ele_list = document.getElementsByClassName("login_user");
+                for (var i = 0; i < ele_list.length; i++) {
+                    ele_list[i].innerHTML = user.realname
+                }
+                if (user.isAdmin == 2) {
+                    document.getElementById("adminLi").removeAttribute("style")
+                    document.getElementById("commonLi").removeAttribute("style")
+                } else {
+                    document.getElementById("commonLi").removeAttribute("style")
+                }
             }
-            if(user.isAdmin == 2) {
-                document.getElementById("adminLi").removeAttribute("style")
-                document.getElementById("commonLi").removeAttribute("style")
-            } else {
-                document.getElementById("commonLi").removeAttribute("style")
-            }
-        }
-    })
+        })
+    }
+
     function logoff() {
-        sendRequest("/user/logoff",{})
+        sendRequest("/user/logoff", {})
     }
 
 </script>

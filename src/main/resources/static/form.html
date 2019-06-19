@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>成型条件记录管理系统</title>
-
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
     <link rel="import" href="import.html" id="page2"/>
 
 </head>
@@ -39,20 +39,22 @@
                 </div>
                 <!-- /menu profile quick info -->
 
-                <br />
+                <br/>
 
                 <!-- sidebar menu -->
                 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                     <div class="menu_section">
                         <ul class="nav side-menu">
 
-                            <li style="display: none;" id="commonLi"><a><i class="fa fa-edit"></i> 成型条件 <span class="fa fa-chevron-down"></span></a>
+                            <li style="display: none;" id="commonLi"><a><i class="fa fa-edit"></i> 成型条件 <span
+                                    class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     <li><a href="form.html">记录管理</a></li>
                                 </ul>
                             </li>
                             <!--display: block;-->
-                            <li style="display: none;" id="adminLi"><a><i class="fa fa-clone"></i> admin <span class="fa fa-chevron-down"></span></a>
+                            <li style="display: none;" id="adminLi"><a><i class="fa fa-clone"></i> admin <span
+                                    class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
                                     <li><a href="user.html">用户管理</a></li>
                                     <li><a href="menu.html">菜单管理</a></li>
@@ -84,12 +86,14 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <li class="">
-                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
+                               aria-expanded="false">
                                 <img src="images/timg.jpeg" alt=""><span class="login_user"></span>
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                <li><a href="login.html" onclick="logoff()"><i class="fa fa-sign-out pull-right"></i> 退出</a></li>
+                                <li><a href="login.html" onclick="logoff()"><i class="fa fa-sign-out pull-right"></i> 退出</a>
+                                </li>
                             </ul>
                         </li>
 
@@ -101,8 +105,65 @@
 
         <!-- page content -->
         <div class="right_col" role="main">
-            记录管理
             <div class="clearfix"></div>
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>记录管理 </h3>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">新增记录</button>
+            <table border="1" id="mytable" class="table">
+
+            </table>
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                操作记录
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            时间:
+                            <div class="x_content">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class='col-sm-4'>
+                                            <div class="form-group">
+                                                <div class='input-group date' id='datetimepicker6'>
+                                                    <input type='text' class="form-control" id="datetime" value=""/>
+                                                    <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                         </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            机种: <input type="text" name="robotKind" id="robotKind"> <br/>
+                            模具号: <input type="text" name="mouldNum" id="mouldNum"><br/>
+                            注塑机编号: <input type="text" name="machineNum" id="machineNum"><br/>
+                            备注: <input type="text" name="remark" id="remark"><br/>
+                            <input type="hidden" name="conditionID" id="conditionID">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="clear()">关闭
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="saveCondition()">
+                                提交
+                            </button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
+
+
         </div>
         <!-- /page content -->
 
@@ -112,6 +173,249 @@
     </div>
 </div>
 
+<script>
+    var menuIDList = []
+    $(function () {
+        $('#datetimepicker6').datetimepicker({
+            format: 'YYYY-MM-DD hh:mm'
+        })
+        sendRequest("/menu/queryMenu", {"action": 1}, function (data) {
+            for (var i = 0; i < data.data.length; i++) {
+                var secondList = data.data[i].childList
+                var colum = 0;
+                var row = 3
+                if (secondList == null) {
+                    colum++
+                    menuIDList.push(data.data[i].menuID)
+                } else {
+                    row--
+                    for (j = 0; j < secondList.length; j++) {
+                        var threeList = secondList[j].childList
+                        var colum2 = 0
+                        var row2 = 2
+                        if (threeList == null) {
+                            colum++
+                            colum2++
+                            row = 1
+                            menuIDList.push(secondList[j].menuID)
+                        } else {
+                            row = 1
+                            row2 = 1
+                            for (p = 0; p < threeList.length; p++) {
+                                colum++
+                                colum2++
+                                menuIDList.push(threeList[p].menuID)
+                            }
+                        }
+                        secondList[j].colum = colum2
+                        secondList[j].row = row2
+                    }
+                }
+                data.data[i].colum = colum
+                data.data[i].row = row
+            }
+
+            var head = "<tr>" +
+                "<td rowspan='3' colspan='1'>操作</td>" +
+                "<td rowspan='3' colspan='1'>日期</td>" +
+                "<td rowspan='3' colspan='1'>时间</td>" +
+                "<td rowspan='3' colspan='1'>机种</td>" +
+                "<td rowspan='3' colspan='1'>模具号</td>" +
+                "<td rowspan='3' colspan='1'>注塑机编号</td>" +
+                "<td rowspan='3' colspan='1'>备注</td>" +
+                "<td rowspan='3' colspan='1'>创建人</td>"
+            var twoHead = "<tr>"
+            var threeHead = "<tr>"
+            for (var i = 0; i < data.data.length; i++) {
+                var oneMenu = data.data[i]
+                head += StringFormat("<td rowspan='{0}' colspan='{1}'>{2}</td>", oneMenu.row, oneMenu.colum, oneMenu.menuName)
+                var secondList = data.data[i].childList
+                if (secondList != null) {
+                    for (j = 0; j < secondList.length; j++) {
+                        var twoMenu = secondList[j]
+                        twoHead += StringFormat("<td rowspan='{0}' colspan='{1}'>{2}</td>", twoMenu.row, twoMenu.colum, twoMenu.menuName)
+                        var threeList = secondList[j].childList
+                        if (threeList != null) {
+                            for (p = 0; p < threeList.length; p++) {
+                                var threeMenu = threeList[p]
+                                threeHead += StringFormat("<td>{0}</td>", threeMenu.menuName)
+                            }
+                        }
+                    }
+                }
+            }
+            head += "</tr>"
+            twoHead += "</tr>"
+            threeHead += "</tr>"
+            var allHead = (head + twoHead + threeHead)
+            var userID = ""
+            sendRequest("/user/loginUser", {}, function (data) {
+                var user = data.data
+                if (user.isAdmin == 1) {
+                    userID = user.userID
+                }
+                sendRequest("/condition/queryCondition", {"userID": userID}, function (data) {
+                    for (var i = 0; i < data.data.length; i++) {
+                        var content = "<tr>"
+                        var condition = data.data[i]
+                        var updateAction = "<a onclick='updateCondition(" + condition.conditionID + ")'>修改</a>"
+                        var deleteAction = "<a onclick='deleteCondition(" + condition.conditionID + ")'>删除</a>"
+                        content += "<td>" + updateAction + "  " + deleteAction + "</td>"
+                        content += "<td>"
+                        content += condition.date
+                        content += "</td>"
+                        content += "<td>"
+                        content += condition.time
+                        content += "</td>"
+                        content += "<td>"
+                        content += condition.robotKind
+                        content += "</td>"
+                        content += "<td>"
+                        content += condition.mouldNum
+                        content += "</td>"
+                        content += "<td>"
+                        content += condition.machineNum
+                        content += "</td>"
+                        content += "<td>"
+                        content += condition.remark
+                        content += "</td>"
+                        content += "<td>"
+                        content += condition.realname
+                        content += "</td>"
+                        console.log(menuIDList)
+                        for (var j = 0; j < menuIDList.length; j++) {
+                            var param = condition.conditionID + "_" + menuIDList[j]
+                            content += "<td param='" + param + "'>"
+                            var dataInput = "<input type='text' class='dataInput' dataInputValue='" + param + "'"
+                            if (condition.recordList != null) {
+                                for (var k = 0; k < condition.recordList.length; k++) {
+                                    if (condition.recordList[k].menuID == menuIDList[j]) {
+                                        dataInput += ("value='" + condition.recordList[k].data + "'")
+                                    }
+                                }
+                            }
+                            dataInput += "/>"
+                            content += dataInput
+                            content += "</td>"
+                        }
+
+                        content += "</tr>"
+                        allHead += content
+                    }
+                    document.getElementById("mytable").innerHTML = allHead
+
+                    var dataInput = document.querySelectorAll('.dataInput');
+
+                    for (i = 0; i < dataInput.length; i++) {
+                        dataInput[i].addEventListener('blur', addRecord);
+                    }
+
+                })
+            })
+        })
+
+    });
+
+    function StringFormat() {
+        if (arguments.length == 0)
+            return null;
+        var str = arguments[0];
+        for (var i = 1; i < arguments.length; i++) {
+            var re = '{' + (i - 1) + '}'
+            str = str.replace(re, arguments[i]);
+        }
+        return str;
+    }
+
+    function saveCondition() {
+        var robotKind = document.getElementById("robotKind")
+        var mouldNum = document.getElementById("mouldNum")
+        var machineNum = document.getElementById("machineNum")
+        var remark = document.getElementById("remark")
+        var date = document.getElementById("datetime").value
+        var conditionID = document.getElementById("conditionID").value
+        // debugger
+        // if(date.indexOf("PM") != -1){
+        //     date = date.substring(0,16)
+        //     console.log(date)
+        //     hour = parseInt(date.substring(11,13)) + 12
+        //     console.log(hour)
+        //     date = date.substring(0,11) + hour + date.substring(13,17)
+        //     console.log(date)
+        // }else {
+        //     date = date.substring(0,16)
+        // }
+
+        var data = {
+            "robotKind": robotKind.value,
+            "mouldNum": mouldNum.value,
+            "machineNum": machineNum.value,
+            "remark": remark.value,
+            "date": date.split(" ")[0],
+            "time": date.split(" ")[1],
+            "conditionID": conditionID
+        }
+        var method = "/condition/addCondition"
+        if (conditionID != null && conditionID != "") {
+            method = "/condition/updateCondition"
+        }
+        sendRequest(method, data, function (data) {
+            $('#myModal').modal('hide')
+        })
+        clear()
+        window.location.reload()
+
+    }
+
+    function clear() {
+        document.getElementById("robotKind").value = ""
+        document.getElementById("mouldNum").value = ""
+        document.getElementById("machineNum").value = ""
+        document.getElementById("remark").value = ""
+        document.getElementById("datetime").value = ""
+        document.getElementById("conditionID").value = ""
+    }
+
+    function deleteCondition(id) {
+        sendRequest("/condition/deleteCondition", {"conditionID": id}, function (data) {
+            window.location.reload()
+        })
+    }
+
+    function updateCondition(id) {
+        sendRequest("/user/loginUser", {}, function (data) {
+            var user = data.data
+            var userID = ""
+            if (user.isAdmin == 1) {
+                userID = user.userID
+            }
+            sendRequest("/condition/queryCondition", {"userID": userID, "conditionID": id}, function (data) {
+                document.getElementById("conditionID").value = id
+                document.getElementById("robotKind").value = data.data[0].robotKind
+                document.getElementById("mouldNum").value = data.data[0].mouldNum
+                document.getElementById("machineNum").value = data.data[0].machineNum
+                document.getElementById("remark").value = data.data[0].remark
+                $('#myModal').modal('show')
+            })
+        })
+    }
+
+    function addRecord(e) {
+        debugger
+        var value = e.currentTarget.attributes.dataInputValue.value
+        var conditionID = value.split("_")[0]
+        var menuID = value.split("_")[1]
+        var value = e.currentTarget.value
+        sendRequest("/record/addRecord", {
+            "conditionID": conditionID,
+            "menuID": menuID,
+            "data": value
+        }, function (data) {
+            window.location.reload()
+        })
+    }
+
+</script>
 
 </body>
 </html>

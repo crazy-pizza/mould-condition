@@ -28,6 +28,7 @@ public class RecordService {
         Condition condition = new Condition();
         condition.setUserID(record.getUserID());
         condition.setIsAdmin(record.getIsAdmin());
+        condition.setConditionID(record.getConditionID());
         //先校验权限
         conditionService.validatePermission(condition);
         //删除老记录

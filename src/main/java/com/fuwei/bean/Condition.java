@@ -3,6 +3,7 @@ package com.fuwei.bean;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author YuanChong
@@ -16,8 +17,8 @@ public class Condition {
     private String mouldNum;
     private String robotKind;
     private String machineNum;
-    private Long date;
-    private Long time;
+    private String date;
+    private String time;
     private String remark;
     private Long userID;
     private Integer isAdmin;
@@ -26,4 +27,6 @@ public class Condition {
     private Integer pageSize;
 
     private List<Record> recordList;
+
+    private String realname;
 }

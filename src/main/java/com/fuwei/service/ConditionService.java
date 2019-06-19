@@ -2,11 +2,12 @@ package com.fuwei.service;
 
 import com.fuwei.bean.Condition;
 import com.fuwei.bean.Record;
+import com.fuwei.bean.User;
 import com.fuwei.common.ResultCode;
 import com.fuwei.exception.BusinessException;
 import com.fuwei.mapper.ConditionMapper;
 import com.fuwei.mapper.RecordMapper;
-import com.github.pagehelper.PageHelper;
+import com.fuwei.mapper.UserMapper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -30,6 +33,8 @@ public class ConditionService {
 
     @Autowired
     private RecordMapper recordMapper;
+    @Autowired
+    private UserMapper userMapper;
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -72,8 +77,8 @@ public class ConditionService {
         }
     }
 
-    public PageInfo<Condition> queryCondition(Condition condition) {
-        PageHelper.startPage(condition.getPageNum(), condition.getPageSize());
+    public List<Condition> queryCondition(Condition condition) {
+        Map<Long, User> userMap = userMapper.queryList(new User()).stream().collect(Collectors.toMap(User::getUserID, Function.identity()));
         List<Condition> list = conditionMapper.query(condition);
         //所有查到的条件记录的主键ID集合
         String conditionIDs = list.stream().map(Condition::getConditionID).map(String::valueOf).collect(Collectors.joining(","));
@@ -87,10 +92,9 @@ public class ConditionService {
             for(Condition con : list) {
                 List<Record> records = recordMap.get(con.getConditionID());
                 con.setRecordList(records);
-
+                Optional.ofNullable(userMap.get(con.getUserID())).ifPresent(user -> con.setRealname(user.getRealname()));
             }
         }
-        PageInfo<Condition> pageInfo = new PageInfo(list);
-        return pageInfo;
+        return list;
     }
 }

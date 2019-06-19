@@ -3,8 +3,8 @@
 <mapper namespace="com.fuwei.mapper.ConditionMapper">
 
     <select id="query" parameterType="com.fuwei.bean.Condition" resultType="com.fuwei.bean.Condition">
-        SELECT conditionID,mouldNum,robotKind,machineNum,date,time,remark,userID,actionTime,createTime
-        FROM condition
+        SELECT conditionID,mouldNum,robotKind,machineNum,`date`,`time`,remark,userID,actionTime,createTime
+        FROM `condition`
         <where>
             <if test="conditionID != null and conditionID != ''">
                 AND conditionID = #{conditionID}
@@ -16,12 +16,12 @@
     </select>
 
     <insert id="insert" parameterType="com.fuwei.bean.Condition">
-        INSERT INTO condition(
+        INSERT INTO `condition`(
         <if test="mouldNum != null and mouldNum != ''">mouldNum,</if>
         <if test="robotKind != null and robotKind != ''">robotKind,</if>
         <if test="machineNum != null and machineNum != ''">machineNum,</if>
-        <if test="date != null and date != ''">action,</if>
-        <if test="time != null and time != ''">time,</if>
+        <if test="date != null and date != ''">`date`,</if>
+        <if test="time != null and time != ''">`time`,</if>
         <if test="remark != null and remark != ''">remark,</if>
         <if test="userID != null and userID != ''">userID,</if>
         actionTime,
@@ -39,11 +39,11 @@
     </insert>
 
     <delete id="delete" parameterType="com.fuwei.bean.Condition">
-        DELETE FROM condition where conditionID = #{conditionID}
+        DELETE FROM `condition` where conditionID = #{conditionID}
     </delete>
 
     <update id="update" parameterType="com.fuwei.bean.Condition">
-        UPDATE condition SET
+        UPDATE `condition` SET
         <if test="mouldNum != null and mouldNum != '' ">
             mouldNum=#{mouldNum},
         </if>
