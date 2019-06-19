@@ -3,6 +3,7 @@ package com.fuwei.service;
 import com.fuwei.bean.Condition;
 import com.fuwei.bean.Record;
 import com.fuwei.mapper.RecordMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +34,9 @@ public class RecordService {
         conditionService.validatePermission(condition);
         //删除老记录
         recordMapper.delete(record);
-        //添加新记录
-        recordMapper.insert(record);
-
+        if(StringUtils.isNotEmpty(record.getData())) {
+            //添加新记录
+            recordMapper.insert(record);
+        }
     }
 }
