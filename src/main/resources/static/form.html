@@ -11,6 +11,31 @@
     <title>成型条件记录管理系统</title>
     <link href="https://cdn.staticfile.org/twitter-bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
     <link rel="import" href="import.html" id="page2"/>
+    <style>
+        #mytable td > span {
+            display: inline-block;
+            white-space: nowrap;
+        }
+        #mytable td, #mytable th {
+            padding: 5px 8px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        #mytable td{
+            text-align: left;
+        }
+        #mytable td.noPadding{
+            padding: 0;
+        }
+        #mytable td > input{
+            padding: 5px 8px;
+            height: 39px;
+            border: none;
+        }
+        .scrollContent{
+            overflow-x: auto;
+        }
+    </style>
 
 </head>
 
@@ -112,9 +137,11 @@
                 </div>
             </div>
             <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">新增记录</button>
-            <table border="1" id="mytable" class="table">
+            <div class="scrollContent">
+                <table border="1" id="mytable" class="table">
 
-            </table>
+                </table>
+            </div>
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog">
@@ -216,29 +243,29 @@
             }
 
             var head = "<tr>" +
-                "<td rowspan='3' colspan='1'>操作</td>" +
-                "<td rowspan='3' colspan='1'>日期</td>" +
-                "<td rowspan='3' colspan='1'>时间</td>" +
-                "<td rowspan='3' colspan='1'>机种</td>" +
-                "<td rowspan='3' colspan='1'>模具号</td>" +
-                "<td rowspan='3' colspan='1'>注塑机编号</td>" +
-                "<td rowspan='3' colspan='1'>备注</td>" +
-                "<td rowspan='3' colspan='1'>创建人</td>"
+                "<th rowspan='3' colspan='1'>操作</th>" +
+                "<th rowspan='3' colspan='1'>日期</th>" +
+                "<th rowspan='3' colspan='1'>时间</th>" +
+                "<th rowspan='3' colspan='1'>机种</th>" +
+                "<th rowspan='3' colspan='1'>模具号</th>" +
+                "<th rowspan='3' colspan='1'>注塑机编号</th>" +
+                "<th rowspan='3' colspan='1'>备注</th>" +
+                "<th rowspan='3' colspan='1'>创建人</th>"
             var twoHead = "<tr>"
             var threeHead = "<tr>"
             for (var i = 0; i < data.data.length; i++) {
                 var oneMenu = data.data[i]
-                head += StringFormat("<td rowspan='{0}' colspan='{1}'>{2}</td>", oneMenu.row, oneMenu.colum, oneMenu.menuName)
+                head += StringFormat("<th rowspan='{0}' colspan='{1}'>{2}</th>", oneMenu.row, oneMenu.colum, oneMenu.menuName)
                 var secondList = data.data[i].childList
                 if (secondList != null) {
                     for (j = 0; j < secondList.length; j++) {
                         var twoMenu = secondList[j]
-                        twoHead += StringFormat("<td rowspan='{0}' colspan='{1}'>{2}</td>", twoMenu.row, twoMenu.colum, twoMenu.menuName)
+                        twoHead += StringFormat("<th rowspan='{0}' colspan='{1}'>{2}</th>", twoMenu.row, twoMenu.colum, twoMenu.menuName)
                         var threeList = secondList[j].childList
                         if (threeList != null) {
                             for (p = 0; p < threeList.length; p++) {
                                 var threeMenu = threeList[p]
-                                threeHead += StringFormat("<td>{0}</td>", threeMenu.menuName)
+                                threeHead += StringFormat("<th>{0}</th>", threeMenu.menuName)
                             }
                         }
                     }
@@ -248,45 +275,38 @@
             twoHead += "</tr>"
             threeHead += "</tr>"
             var allHead = (head + twoHead + threeHead)
-            var userID = ""
-            sendRequest("/user/loginUser", {}, function (data) {
-                var user = data.data
-                if (user.isAdmin == 1) {
-                    userID = user.userID
-                }
-                sendRequest("/condition/queryCondition", {"userID": userID}, function (data) {
+            sendRequest("/condition/queryCondition", {}, function (data) {
                     for (var i = 0; i < data.data.length; i++) {
                         var content = "<tr>"
                         var condition = data.data[i]
                         var updateAction = "<a onclick='updateCondition(" + condition.conditionID + ")'>修改</a>"
                         var deleteAction = "<a onclick='deleteCondition(" + condition.conditionID + ")'>删除</a>"
-                        content += "<td>" + updateAction + "  " + deleteAction + "</td>"
-                        content += "<td>"
+                        content += "<td><span style='width: 56px;'>" + updateAction + "  " + deleteAction + "</span></td>"
+                        content += "<td><span style='width: 83px;'>"
                         content += condition.date
-                        content += "</td>"
-                        content += "<td>"
+                        content += "</span></td>"
+                        content += "<td><span>"
                         content += condition.time
-                        content += "</td>"
-                        content += "<td>"
+                        content += "</span></td>"
+                        content += "<td><span>"
                         content += condition.robotKind
-                        content += "</td>"
-                        content += "<td>"
+                        content += "</span></td>"
+                        content += "<td><span>"
                         content += condition.mouldNum
-                        content += "</td>"
-                        content += "<td>"
+                        content += "</span></td>"
+                        content += "<td><span>"
                         content += condition.machineNum
-                        content += "</td>"
-                        content += "<td>"
+                        content += "</span></td>"
+                        content += "<td><span>"
                         content += condition.remark
-                        content += "</td>"
-                        content += "<td>"
+                        content += "</span></td>"
+                        content += "<td><span>"
                         content += condition.realname
-                        content += "</td>"
-                        console.log(menuIDList)
+                        content += "</span></td>"
                         for (var j = 0; j < menuIDList.length; j++) {
                             var param = condition.conditionID + "_" + menuIDList[j]
-                            content += "<td param='" + param + "'>"
-                            var dataInput = "<input type='text' class='dataInput' dataInputValue='" + param + "'"
+                            content += "<td class='noPadding' param='" + param + "'>"
+                            var dataInput = "<input type='text' style='width: 80px;' class='dataInput' dataInputValue='" + param + "'"
                             if (condition.recordList != null) {
                                 for (var k = 0; k < condition.recordList.length; k++) {
                                     if (condition.recordList[k].menuID == menuIDList[j]) {
@@ -311,7 +331,6 @@
                     }
 
                 })
-            })
         })
 
     });
@@ -383,25 +402,17 @@
     }
 
     function updateCondition(id) {
-        sendRequest("/user/loginUser", {}, function (data) {
-            var user = data.data
-            var userID = ""
-            if (user.isAdmin == 1) {
-                userID = user.userID
-            }
-            sendRequest("/condition/queryCondition", {"userID": userID, "conditionID": id}, function (data) {
-                document.getElementById("conditionID").value = id
-                document.getElementById("robotKind").value = data.data[0].robotKind
-                document.getElementById("mouldNum").value = data.data[0].mouldNum
-                document.getElementById("machineNum").value = data.data[0].machineNum
-                document.getElementById("remark").value = data.data[0].remark
-                $('#myModal').modal('show')
-            })
+        sendRequest("/condition/queryCondition", {"conditionID": id}, function (data) {
+            document.getElementById("conditionID").value = id
+            document.getElementById("robotKind").value = data.data[0].robotKind
+            document.getElementById("mouldNum").value = data.data[0].mouldNum
+            document.getElementById("machineNum").value = data.data[0].machineNum
+            document.getElementById("remark").value = data.data[0].remark
+            $('#myModal').modal('show')
         })
     }
 
     function addRecord(e) {
-        debugger
         var value = e.currentTarget.attributes.dataInputValue.value
         var conditionID = value.split("_")[0]
         var menuID = value.split("_")[1]
